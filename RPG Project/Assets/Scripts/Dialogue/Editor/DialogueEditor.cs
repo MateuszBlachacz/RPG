@@ -21,11 +21,17 @@ namespace RPG.Dialogue.Editor {
             if (dialogue)
             {
                 ShowEditorWindow();
+
                 return true;
             }
-            
-
             return false;
+        }
+
+        private void OnGUI()
+        {
+            EditorGUILayout.LabelField("Hello, World");
+            EditorGUILayout.LabelField("Hello, World");
+            EditorGUILayout.LabelField("Hello, World");
         }
     }
 
