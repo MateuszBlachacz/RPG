@@ -35,10 +35,9 @@ namespace RPG.Dialogue.Editor {
 
         private void OnSelectionChanged()
         {
-            // selectedDialogue = Selection.activeObject as Dialogue;
-            Dialogue newDialogue = Selection.activeObject as Dialogue;
-            if (newDialogue) {
-                selectedDialogue = newDialogue;
+            selectedDialogue = Selection.activeObject as Dialogue;
+            
+            if (selectedDialogue) {
                 Repaint();
             }
             Debug.Log("On selection change");
@@ -53,6 +52,10 @@ namespace RPG.Dialogue.Editor {
             else
             {
                 EditorGUILayout.LabelField(selectedDialogue.name);
+                foreach (DialogueNode node in selectedDialogue.GetAllNodes())
+                {
+                    EditorGUILayout.LabelField(node.text);
+                }
             }
         }
     }

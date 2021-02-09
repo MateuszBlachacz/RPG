@@ -7,7 +7,23 @@ namespace RPG.Dialogue
     [CreateAssetMenu(fileName = "New Dialogue", menuName = "Dialogue", order = 0)]
     public class Dialogue : ScriptableObject
     {
-        [SerializeField] DialogueNode[] nodes;
+        [SerializeField] List<DialogueNode> nodes;
+
+#if UNITY_EDITOR
+        public void Awake()
+        {
+            Debug.Log("Awake");
+            if(nodes.Count == 0)
+            {
+                nodes.Add(new DialogueNode());
+            }
+        }
+#endif
+
+        public IEnumerable<DialogueNode> GetAllNodes()
+        {
+            return nodes;
+        }
     }
 }
 
