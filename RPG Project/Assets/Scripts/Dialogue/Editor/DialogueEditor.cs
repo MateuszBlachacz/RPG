@@ -53,11 +53,21 @@ namespace RPG.Dialogue.Editor {
             {
                 EditorGUILayout.LabelField(selectedDialogue.name);
                 string newText = "";
+                string newUniquieId = "";
                 foreach (DialogueNode node in selectedDialogue.GetAllNodes())
                 {
-                     newText = EditorGUILayout.TextField(node.text);
-                    if (newText != node.text) {
+                    EditorGUI.BeginChangeCheck();
+                    EditorGUILayout.LabelField("uniqueId");
+                    newUniquieId = EditorGUILayout.TextField(node.uniquieId);
+                    EditorGUILayout.LabelField("Text");
+                    newText = EditorGUILayout.TextField(node.text);
+
+                    if (EditorGUI.EndChangeCheck()) {
+                        //NOT necesery to set object as a dirty it was mark automaticliy
+                        Undo.RecordObject(selectedDialogue, "Update Dialogue Text");
+                        node.uniquieId = newUniquieId;
                         node.text = newText;
+
                         EditorUtility.SetDirty(selectedDialogue);
                     }
                 }

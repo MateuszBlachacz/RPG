@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: New Dialogue 5
   m_EditorClassIdentifier: 
   nodes:
-  - uniquieId: 
+  - uniquieId: 1
     text: 1 093509 09243
     children: []
-  - uniquieId: 
+  - uniquieId: 2
     text: 2
     children: []
-  - uniquieId: 
+  - uniquieId: 3
     text: 3
     children: []
-  - uniquieId: 
+  - uniquieId: 4
     text: 4
     children: []
-  - uniquieId: 
+  - uniquieId: 5
     text: 5
     children: []
