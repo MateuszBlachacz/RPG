@@ -15,46 +15,46 @@ MonoBehaviour:
   nodes:
   - uniquieId: 1
     text: 1 093509 09243
-    position:
+    rect:
       serializedVersion: 2
-      x: 20
-      y: 20
+      x: 267
+      y: 208
       width: 200
-      height: 150
+      height: 100
     children: []
   - uniquieId: 2
     text: 2
-    position:
+    rect:
       serializedVersion: 2
-      x: 20
-      y: 150
-      width: 400
-      height: 150
+      x: 10
+      y: 10
+      width: 200
+      height: 100
     children: []
   - uniquieId: 3
     text: 3
-    position:
+    rect:
       serializedVersion: 2
-      x: 50
-      y: 280
+      x: 10
+      y: 10
       width: 200
-      height: 150
+      height: 100
     children: []
   - uniquieId: 4
     text: 4
-    position:
+    rect:
       serializedVersion: 2
-      x: 20
-      y: 410
+      x: 10
+      y: 10
       width: 200
-      height: 150
+      height: 100
     children: []
   - uniquieId: 5
     text: 5
-    position:
+    rect:
       serializedVersion: 2
-      x: 20
-      y: 540
+      x: 10
+      y: 10
       width: 200
-      height: 150
+      height: 100
     children: []

@@ -10,6 +10,9 @@ namespace RPG.Dialogue.Editor {
     {
         Dialogue selectedDialogue = null;
         GUIStyle nodeStyle;
+
+        bool dragging = false;
+
         [MenuItem("Window/Dialogue Editor")]
         public static void ShowEditorWindow()
         {
@@ -58,6 +61,8 @@ namespace RPG.Dialogue.Editor {
             } 
             else
             {
+                ProcessEvents();
+
                 EditorGUILayout.LabelField(selectedDialogue.name);
                 string newText = "";
                 string newUniquieId = "";
@@ -66,11 +71,31 @@ namespace RPG.Dialogue.Editor {
                     OnGUINode(out newText, out newUniquieId, node);
                 }
             }
+            
         }
 
+        void ProcessEvents()
+        {
+            
+            if (Event.current.type == EventType.MouseDown && !dragging) {
+                dragging = true;
+            }
+            else if (Event.current.type == EventType.MouseDrag && dragging)
+            {
+                Undo.RecordObject(selectedDialogue, "Move Dialogue");
+                selectedDialogue.GetRootNode().rect.position = Event.current.mousePosition;
+                MyDebug.info(this, ("Mouse Postion", Event.current.mousePosition));
+                GUI.changed = true;
+            }
+            else if (Event.current.type == EventType.MouseUp && dragging)
+            {
+                dragging = false;
+               // selectedDialogue.GetRootNode().rect.position = Event.current.mousePosition;
+            } 
+        }
         private void OnGUINode(out string newText, out string newUniquieId, DialogueNode node)
         {
-            GUILayout.BeginArea(node.position, nodeStyle);
+            GUILayout.BeginArea(node.rect, nodeStyle);
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.LabelField("Node:", EditorStyles.boldLabel);
             EditorGUILayout.LabelField("uniqueId");
