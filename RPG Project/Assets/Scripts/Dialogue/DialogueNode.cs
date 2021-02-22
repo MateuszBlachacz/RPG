@@ -12,7 +12,7 @@ namespace RPG.Dialogue
         public string text;
         public Rect rect = new Rect(10,10, 200, 150);
         public string[] children;
-        
+
     }
 }
 
