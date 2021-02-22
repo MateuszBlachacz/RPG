@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -10,8 +11,9 @@ namespace RPG.Dialogue.Editor {
     {
         Dialogue selectedDialogue = null;
         GUIStyle nodeStyle;
-
-        bool dragging = false;
+ 
+        Vector2 draggingOffset;
+        DialogueNode draggingNode = null;
 
         [MenuItem("Window/Dialogue Editor")]
         public static void ShowEditorWindow()
@@ -77,22 +79,25 @@ namespace RPG.Dialogue.Editor {
         void ProcessEvents()
         {
             
-            if (Event.current.type == EventType.MouseDown && !dragging) {
-                dragging = true;
+            if (Event.current.type == EventType.MouseDown && draggingNode == null) {
+                draggingNode = GetNodeAtPoint(Event.current.mousePosition);
+                if (null != draggingNode) draggingOffset = draggingNode.rect.position - Event.current.mousePosition;
             }
-            else if (Event.current.type == EventType.MouseDrag && dragging)
+            else if (Event.current.type == EventType.MouseDrag && draggingNode != null)
             {
                 Undo.RecordObject(selectedDialogue, "Move Dialogue");
-                selectedDialogue.GetRootNode().rect.position = Event.current.mousePosition;
-                MyDebug.info(this, ("Mouse Postion", Event.current.mousePosition));
-                GUI.changed = true;
+                draggingNode.rect.position = Event.current.mousePosition + draggingOffset;
+               // draggingNode.rect.Contains();
+               // MyDebug.info(this, ("Mouse Postion", Event.current.mousePosition));
+                GUI.changed = true;// or Repaint
             }
-            else if (Event.current.type == EventType.MouseUp && dragging)
+            else if (Event.current.type == EventType.MouseUp && draggingNode !=null)
             {
-                dragging = false;
+                draggingNode = null;
                // selectedDialogue.GetRootNode().rect.position = Event.current.mousePosition;
             } 
         }
+
         private void OnGUINode(out string newText, out string newUniquieId, DialogueNode node)
         {
             GUILayout.BeginArea(node.rect, nodeStyle);
@@ -113,6 +118,16 @@ namespace RPG.Dialogue.Editor {
                 //EditorUtility.SetDirty(selectedDialogue);
             }
             GUILayout.EndArea();
+        }
+
+        private DialogueNode GetNodeAtPoint(Vector2 point)
+        {
+            DialogueNode nodeAtPoint = null;
+            foreach (DialogueNode node in selectedDialogue.GetAllNodes())
+            {
+                if (node.rect.Contains(point))nodeAtPoint = node;
+            }
+            return nodeAtPoint;
         }
     }
 
