@@ -70,11 +70,16 @@ namespace RPG.Dialogue.Editor {
                 string newUniquieId = "";
                 foreach (DialogueNode node in selectedDialogue.GetAllNodes())
                 {
-                    OnGUINode(out newText, out newUniquieId, node);
+                    DrawConnections(node);
+                }
+                foreach (DialogueNode node in selectedDialogue.GetAllNodes())
+                {
+                    DrawNode(out newText, out newUniquieId, node);
                 }
             }
             
         }
+
 
         void ProcessEvents()
         {
@@ -98,7 +103,7 @@ namespace RPG.Dialogue.Editor {
             } 
         }
 
-        private void OnGUINode(out string newText, out string newUniquieId, DialogueNode node)
+        private void DrawNode(out string newText, out string newUniquieId, DialogueNode node)
         {
             GUILayout.BeginArea(node.rect, nodeStyle);
             EditorGUI.BeginChangeCheck();
@@ -118,12 +123,39 @@ namespace RPG.Dialogue.Editor {
                 //EditorUtility.SetDirty(selectedDialogue);
             }
 
-            foreach(DialogueNode childNode in selectedDialogue.GetAllChildren(node))
-            {
-                EditorGUILayout.LabelField(childNode.text);
-            }
+            //foreach(DialogueNode childNode in selectedDialogue.GetAllChildren(node))
+            //{
+            //    EditorGUILayout.LabelField(childNode.text);
+            //}
             
             GUILayout.EndArea();
+        }
+        private void DrawConnections(DialogueNode node)
+        {
+            Vector3 startPosition = new Vector2(node.rect.xMax, node.rect.center.y);
+            
+            foreach (DialogueNode childNode in selectedDialogue.GetAllChildren(node))
+            {
+                //Vector3 startPosition = node.rect.center;
+                //startPosition.x += node.rect.width / 2;
+                //Vector3 endPosition = childNode.rect.center;
+                //endPosition.x -= node.rect.width / 2;
+
+                Vector3 endPosition = new Vector2(childNode.rect.xMin, childNode.rect.center.y);
+                Vector3 controlPointOffset = endPosition - startPosition;
+                controlPointOffset.y = 0;
+                controlPointOffset.x *= 0.8f;
+                Handles.DrawBezier(
+                    startPosition,
+                    endPosition,
+                    startPosition + controlPointOffset,
+                    endPosition - controlPointOffset,
+                    Color.white,
+                    null,
+                    4f
+                    );
+
+            }
         }
 
         private DialogueNode GetNodeAtPoint(Vector2 point)

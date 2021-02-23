@@ -12,4 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20020754e2d077c45a6d80bb16361ff0, type: 3}
   m_Name: some
   m_EditorClassIdentifier: 
-  nodes: []
+  nodes:
+  - uniquieId: 
+    text: 
+    rect:
+      serializedVersion: 2
+      x: 243
+      y: 133
+      width: 200
+      height: 150
+    children:
+    - 
+  - uniquieId: 
+    text: 
+    rect:
+      serializedVersion: 2
+      x: 234
+      y: 307
+      width: 200
+      height: 150
+    children: []
+  - uniquieId: 
+    text: 
+    rect:
+      serializedVersion: 2
+      x: 165
+      y: 84
+      width: 200
+      height: 150
+    children: []
