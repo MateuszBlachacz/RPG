@@ -10,10 +10,16 @@ namespace RPG.Dialogue.Editor {
     public class DialogueEditor : EditorWindow
     {
         Dialogue selectedDialogue = null;
+        [NonSerialized]
         GUIStyle nodeStyle;
- 
+
+        [NonSerialized]
         Vector2 draggingOffset;
+        [NonSerialized]
         DialogueNode draggingNode = null;
+
+        [NonSerialized]
+        DialogueNode creatingNode = null;
 
         [MenuItem("Window/Dialogue Editor")]
         public static void ShowEditorWindow()
@@ -76,6 +82,11 @@ namespace RPG.Dialogue.Editor {
                 {
                     DrawNode(out newText, out newUniquieId, node);
                 }
+                if (null != creatingNode) {
+                    Undo.RecordObject(selectedDialogue, "Added Dialogue Node");
+                    selectedDialogue.CreateNode(creatingNode);
+                    creatingNode = null;
+                }
             }
             
         }
@@ -107,7 +118,7 @@ namespace RPG.Dialogue.Editor {
         {
             GUILayout.BeginArea(node.rect, nodeStyle);
             EditorGUI.BeginChangeCheck();
-            EditorGUILayout.LabelField("Node:", EditorStyles.boldLabel);
+            //EditorGUILayout.LabelField("Node:", EditorStyles.boldLabel);
             EditorGUILayout.LabelField("uniqueId");
             newUniquieId = EditorGUILayout.TextField(node.uniquieId);
             EditorGUILayout.LabelField("Text");
@@ -117,12 +128,15 @@ namespace RPG.Dialogue.Editor {
             {
                 //NOT necesery to set object as a dirty it was mark automaticliy
                 Undo.RecordObject(selectedDialogue, "Update Dialogue Text");
-                node.uniquieId = newUniquieId;
+              //  node.uniquieId = newUniquieId;
                 node.text = newText;
 
                 //EditorUtility.SetDirty(selectedDialogue);
             }
-
+            if (GUILayout.Button("+")) {
+                MyDebug.info(this, ("", "Create new Node"));
+                creatingNode = node; 
+            }
             //foreach(DialogueNode childNode in selectedDialogue.GetAllChildren(node))
             //{
             //    EditorGUILayout.LabelField(childNode.text);

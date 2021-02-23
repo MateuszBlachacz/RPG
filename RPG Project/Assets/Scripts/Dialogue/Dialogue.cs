@@ -8,17 +8,20 @@ namespace RPG.Dialogue
     [CreateAssetMenu(fileName = "New Dialogue", menuName = "Dialogue", order = 0)]
     public class Dialogue : ScriptableObject
     {
-        [SerializeField] List<DialogueNode> nodes;
+        [SerializeField] List<DialogueNode> nodes = new List<DialogueNode>();
 
         Dictionary<string, DialogueNode> nodeLookup = new Dictionary<string, DialogueNode>();
 
 #if UNITY_EDITOR
-        public void Awake()
+        void Awake()
         {
             Debug.Log("Awake");
             if(nodes.Count == 0)
             {
-                nodes.Add(new DialogueNode());
+                DialogueNode rootNode = new DialogueNode();
+                if("" == rootNode.uniquieId)
+                rootNode.uniquieId = Guid.NewGuid().ToString();
+                nodes.Add(rootNode);
             }
             OnValidate();
         }
@@ -50,6 +53,20 @@ namespace RPG.Dialogue
                     yield return nodeLookup[childId];
                 }
             }
+        }
+
+        public void CreateNode(DialogueNode parent)
+        {
+            DialogueNode newChildNode = new DialogueNode();
+            newChildNode.rect.position = setPoition(parent);
+            nodes.Add(newChildNode);
+            parent.children.Add(newChildNode.uniquieId);
+            OnValidate();
+        }
+
+        private Vector2 setPoition(DialogueNode parent)
+        {
+            return parent.rect.position + new Vector2(parent.rect.w + 10f, 0f);
         }
     }
 }
