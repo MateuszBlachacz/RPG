@@ -66,7 +66,7 @@ namespace RPG.Dialogue
 
         private Vector2 setPoition(DialogueNode parent)
         {
-            return parent.rect.position + new Vector2(parent.rect.w + 10f, 0f);
+            return parent.rect.position + new Vector2(parent.rect.width + 10f, 0f);
         }
     }
 }
